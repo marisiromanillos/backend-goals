@@ -4,8 +4,8 @@ const connection = mysql.createConnection({
   user: "root",
   password: "",
   host: "localhost",
-  database: "goals",
   port: 3306,
+  database: "goals",
 });
 
 function asyncMySql(query, params) {

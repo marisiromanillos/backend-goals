@@ -20,3 +20,5 @@ app.listen(port, () => {
 
 // Security - cors
 app.use(cors());
+
+//routes
