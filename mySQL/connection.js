@@ -4,13 +4,13 @@ const connection = mysql.createConnection({
   user: "root",
   password: "",
   host: "localhost",
-  port: 3306,
+  port: 3307,
   database: "goals",
 });
 
 function asyncMySql(query, params) {
   return new Promise((resolve, reject) => {
-    connection.query(query, (error, results) => {
+    connection.query(query, params, (error, results) => {
       if (error) {
         reject(error);
       }
@@ -18,4 +18,5 @@ function asyncMySql(query, params) {
     });
   });
 }
+
 module.exports = asyncMySql;

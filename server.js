@@ -3,7 +3,12 @@ const cors = require("cors");
 const path = require("path");
 const helmet = require("helmet");
 const asyncMySql = require("./mySQL/connection");
-const { addGoal, getGoals, getGoalsRead } = require("./mySQL/queries");
+const {
+  addGoal,
+  getGoals,
+  getGoalsRead,
+  editGoal,
+} = require("./mySQL/queries");
 
 // Instance of express
 const app = express();
@@ -36,18 +41,33 @@ app.get("/goals", async (req, res) => {
   try {
     const result = await asyncMySql(getGoals());
     res.send({ data: result, status: 1 });
-    console.log(result);
   } catch (error) {
     console.error(error);
     res.send({ status: 0, reason: error.sqlMessage });
   }
 });
 
-// GET goals route READ
+// GET read goals route
 app.get("/goals/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await asyncMySql(getGoalsRead(), [id]);
+    res.send({ data: result, status: 1 });
+  } catch (error) {
+    console.error(error);
+    res.send({ status: 0, reason: error.sqlMessage });
+  }
+});
+
+//POST edit goals route
+app.put("/edit_goal/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const { goal, call_to_action } = req.body;
+
+  try {
+    console.log(editGoal(id, goal, call_to_action));
+    const result = await asyncMySql(editGoal(id, goal, call_to_action));
     res.send({ data: result, status: 1 });
     console.log(result);
   } catch (error) {
