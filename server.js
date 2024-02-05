@@ -8,6 +8,7 @@ const {
   getGoals,
   getGoalsRead,
   editGoal,
+  deleteGoal,
 } = require("./mySQL/queries");
 
 // Instance of express
@@ -59,17 +60,29 @@ app.get("/goals/:id", async (req, res) => {
   }
 });
 
-//POST edit goals route
+//PUT edit goals route
 app.put("/edit_goal/:id", async (req, res) => {
   const { id } = req.params;
 
   const { goal, call_to_action } = req.body;
 
   try {
-    console.log(editGoal(id, goal, call_to_action));
     const result = await asyncMySql(editGoal(id, goal, call_to_action));
     res.send({ data: result, status: 1 });
     console.log(result);
+  } catch (error) {
+    console.error(error);
+    res.send({ status: 0, reason: error.sqlMessage });
+  }
+});
+
+//DELETE ROUTE
+app.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await asyncMySql(deleteGoal(id), [id]);
+    console.log(result);
+    res.send({ status: 1, message: "Record deleted successfully" });
   } catch (error) {
     console.error(error);
     res.send({ status: 0, reason: error.sqlMessage });

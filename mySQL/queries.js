@@ -15,4 +15,7 @@ module.exports = {
   editGoal: (id, goal, call_to_action) => {
     return `UPDATE user_goals SET goal='${goal}', call_to_action='${call_to_action}' WHERE id=${id}`;
   },
+  deleteGoal: (id) => {
+    return `DELETE FROM user_goals WHERE id = ?`;
+  },
 };
